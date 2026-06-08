@@ -3293,11 +3293,19 @@ function renderQuestion(){
   const visual=$('#questionVisual');
   if(q.picture){
     visual.classList.remove('hidden');
-    if(String(q.picture).startsWith('data:image')){
-      visual.innerHTML=`<img class="question-picture-img" src="${q.picture}" alt="${q.pictureFile || q.pictureLabel || 'Reading picture'}">`;
-    } else {
-      visual.innerHTML=`<div class="reading-placeholder">${q.pictureFile || q.pictureLabel || q.picture}</div>`;
-    }
+   const pictureSrc = String(q.picture);
+if(
+  pictureSrc.startsWith('data:image') ||
+  pictureSrc.startsWith('assets/') ||
+  pictureSrc.endsWith('.png') ||
+  pictureSrc.endsWith('.jpg') ||
+  pictureSrc.endsWith('.jpeg') ||
+  pictureSrc.endsWith('.webp')
+){
+  visual.innerHTML=`<img class="question-picture-img" src="${pictureSrc}" alt="${q.pictureFile || q.pictureLabel || 'Reading picture'}">`;
+} else {
+  visual.innerHTML=`<div class="reading-placeholder">${q.pictureFile || q.pictureLabel || pictureSrc}</div>`;
+}
   } else { visual.classList.add('hidden'); visual.innerHTML=''; }
   $('#questionText').textContent=q.question || '';
   $('#questionText').classList.toggle('hidden', !q.question);
